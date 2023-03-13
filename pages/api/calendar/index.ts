@@ -1,11 +1,9 @@
-import { discordWebhook } from "@/util";
-import { REST } from "discord.js";
-
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
+import { createCalendarEvent } from "@/util";
 
 type Data = {
-  message: any;
+  message: string;
 };
 
 const invalidMethod: any = { error: "Invalid request method" };
@@ -17,7 +15,7 @@ export default async function handler(
   if (req.method !== "POST") return res.status(400).json(invalidMethod);
 
   if (!req.body) return res.status(400).json({ message: "No body provided" });
-  const { name, start, end, description, location, image } = req.body;
+  const { name, start, end, description, location, eventLink } = req.body;
 
   if (!name)
     return res
@@ -39,6 +37,10 @@ export default async function handler(
     return res
       .status(400)
       .json({ message: "Missing required body field: location" });
+  if (!eventLink)
+    return res
+      .status(400)
+      .json({ message: "Missing required body field: eventLink" });
   if (new Date(start) < new Date())
     return res
       .status(400)
@@ -46,38 +48,18 @@ export default async function handler(
   if (new Date(end) < new Date())
     return res.status(400).json({ message: "End date cannot be in the past" });
 
-  const rest = new REST({ version: "10" }).setToken(
-    process.env.NEXT_PUBLIC_DISCORD_BOT_TOKEN as string
-  );
-
   try {
-    const response: any = await rest.post(
-      `/guilds/${process.env.NEXT_PUBLIC_ACM_GUILD_ID}/scheduled-events`,
-      {
-        body: {
-          name,
-          scheduled_start_time: start,
-          scheduled_end_time: end,
-          description,
-          image,
-          entity_metadata: {
-            location,
-          },
-          entity_type: 3,
-          privacy_level: 2,
-        },
-      }
+    await createCalendarEvent(
+      name,
+      start,
+      end,
+      location,
+      description,
+      eventLink
     );
-    const eventID = response.id as string;
-
-    discordWebhook.eventCreationPing(
-      ":bangbang: New Discord Event Created :bangbang:",
-      `${process.env.NEXT_PUBLIC_ACM_DISCORD_INVITE_URL}?event=${eventID}`
-    );
-
     return res.status(200).json({ message: "Event created successfully!" });
   } catch (err) {
     console.error(err);
-    return res.status(400).json({ message: err });
+    return res.status(400).json({ message: JSON.stringify(err) });
   }
 }
