@@ -54,6 +54,12 @@ const parseEventPage = (notionPage: any): EventDetails => {
 
 type Data = EventDetails;
 
+/**
+ * Get Notion Page Event Details
+ * @param req
+ * @param res
+ * @returns
+ */
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   if (req.method !== "GET") return res.status(400).json(invalidMethod);
 
@@ -74,6 +80,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   const eventDetails = parseEventPage(page);
-
   return res.status(200).json(eventDetails);
 }

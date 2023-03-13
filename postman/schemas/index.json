@@ -2,14 +2,14 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "Klefke API",
+    "title": "Klefki API",
     "description": "Easily interact with external APIs to access powerful data."
   },
   "servers": [
     {
-      "url": "https://klefke.acmucsd.com/api",
+      "url": "https://klefki.acmucsd.com/api",
       "description": "Live production API server"
-    }, 
+    },
     {
       "url": "localhost:3000/api",
       "description": "Local sandbox API server"
@@ -19,7 +19,7 @@
     "/notion/page/{pageUrl}": {
       "parameters": [
         {
-          "name": "pageUrl", 
+          "name": "pageUrl",
           "description": "The unique page URL containing the event details",
           "in": "path",
           "required": true,
@@ -58,8 +58,8 @@
   "components": {
     "schemas": {
       "pageUrl": {
-          "description": "The unique page URL containing the event details",
-          "type":"string"
+        "description": "The unique page URL containing the event details",
+        "type": "string"
       },
       "EventDetails": {
         "type": "object",
@@ -71,7 +71,7 @@
             "type": "string"
           },
           "organization": {
-            "type":"array",
+            "type": "array",
             "items": {
               "type": "string"
             }
@@ -98,9 +98,7 @@
       },
       "Error": {
         "type": "object",
-        "required": [
-          "message"
-        ],
+        "required": ["message"],
         "properties": {
           "message": {
             "description": "A human readable error message",
