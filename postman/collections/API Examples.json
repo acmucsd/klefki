@@ -1,0 +1,176 @@
+{
+	"info": {
+		"_postman_id": "b881daea-69e6-45bc-8bba-a39f0d27f57a",
+		"name": "API Examples",
+		"description": "Example requests for all live API routes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "12949536-b881daea-69e6-45bc-8bba-a39f0d27f57a"
+	},
+	"item": [
+		{
+			"name": "Notion",
+			"item": [
+				{
+					"name": "Get Event Page Details",
+					"id": "cd39a86e-5136-4b39-a883-c20c5c2fe7ff",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/notion/page/{{notion_event_page_url}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"notion",
+								"page",
+								"{{notion_event_page_url}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "988f3c07-3cd9-4d2a-a110-b5251f7f431d",
+							"name": "Get Event Page Details",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://klefke.acmucsd.com/api/notion/page/https%3A%2F%2Fwww.notion.so%2Facmucsd%2FA-Deep-Dive-into-ChatGPT-480e5a4dac87467ba9da3fa41a2a4520",
+									"protocol": "https",
+									"host": [
+										"klefke",
+										"acmucsd",
+										"com"
+									],
+									"path": [
+										"api",
+										"notion",
+										"page",
+										"https%3A%2F%2Fwww.notion.so%2Facmucsd%2FA-Deep-Dive-into-ChatGPT-480e5a4dac87467ba9da3fa41a2a4520"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Age",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "public, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Content-Length",
+									"value": "543"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 13 Mar 2023 10:36:39 GMT"
+								},
+								{
+									"key": "Etag",
+									"value": "\"w9b0x5zi25f1\""
+								},
+								{
+									"key": "Server",
+									"value": "Vercel"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=63072000"
+								},
+								{
+									"key": "X-Matched-Path",
+									"value": "/api/notion/page/[url]"
+								},
+								{
+									"key": "X-Vercel-Cache",
+									"value": "MISS"
+								},
+								{
+									"key": "X-Vercel-Id",
+									"value": "sfo1::iad1::j2548-1678703799034-2a1787107e26"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"title\": \"A Deep Dive into ChatGPT\",\n    \"organization\": [\n        \"ACM General\"\n    ],\n    \"location\": \"Design and Innovation Building 202/208\",\n    \"description\": \"Ever wonder how conversational chatbots are designed and automated? It’s time to come out and take a look at the biggest and most interesting chatbots in the AI field right now! Learn about popular chatbot algorithms and their real-world applications at this exciting workshop!\",\n    \"checkin\": \"chatgpt\",\n    \"start\": \"2023-02-28T17:00:00.000-08:00\",\n    \"end\": \"2023-02-28T19:00:00.000-08:00\",\n    \"acmurl\": \"acmurl.com/chatgpt\"\n}"
+						}
+					]
+				}
+			],
+			"id": "f1792f0d-c209-4ec6-8084-cf38d90daa1a",
+			"description": "Interact with the Notion API to read and modify database details."
+		},
+		{
+			"name": "Google Calendar",
+			"item": [],
+			"id": "12bc82cf-865d-4368-adeb-7b330141085e"
+		},
+		{
+			"name": "Discord",
+			"item": [],
+			"id": "9b31aa6f-fa95-4396-97fd-5f45c39b7da3"
+		},
+		{
+			"name": "Facebook",
+			"item": [],
+			"id": "18e1def0-2716-4bf2-ad43-472591aa5c74"
+		},
+		{
+			"name": "ACMURL",
+			"item": [],
+			"id": "04ab0fef-7811-4f94-8ec8-a2616d4b6ce8"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "a025254e-0459-4ae5-8c03-f5a6609c8d3f",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "e7fec997-8d59-44a5-bfed-02058e10e654",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "9236dfdc-6424-4330-8d44-044f1dcab840",
+			"key": "base_url",
+			"value": "https://klefke.acmucsd.com/api",
+			"type": "string"
+		},
+		{
+			"id": "5efc642c-5fdb-4fd0-9198-08a774d8b0ce",
+			"key": "notion_event_page_url",
+			"value": "https%3A%2F%2Fwww.notion.so%2Facmucsd%2FA-Deep-Dive-into-ChatGPT-480e5a4dac87467ba9da3fa41a2a4520",
+			"type": "string"
+		}
+	]
+}

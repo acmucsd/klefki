@@ -1,0 +1,125 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Klefke API",
+    "description": "Easily interact with external APIs to access powerful data."
+  },
+  "servers": [
+    {
+      "url": "https://klefke.acmucsd.com/api",
+      "description": "Live production API server"
+    }, 
+    {
+      "url": "localhost:3000/api",
+      "description": "Local sandbox API server"
+    }
+  ],
+  "paths": {
+    "/notion/page/{pageUrl}": {
+      "parameters": [
+        {
+          "name": "pageUrl", 
+          "description": "The unique page URL containing the event details",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/pageUrl"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get simple event details",
+        "responses": {
+          "200": {
+            "description": "The event details corresponding to the provided `pageUrl`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "pageUrl": {
+          "description": "The unique page URL containing the event details",
+          "type":"string"
+      },
+      "EventDetails": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/EventDetails"
+          },
+          "title": {
+            "type": "string"
+          },
+          "organization": {
+            "type":"array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "location": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "checkin": {
+            "type": "string"
+          },
+          "start": {
+            "type": "string"
+          },
+          "end": {
+            "type": "string"
+          },
+          "acmurl": {
+            "type": "string"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "description": "A human readable error message",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Api-Key"
+      }
+    }
+  },
+  "security": [
+    {
+      "ApiKey": []
+    }
+  ]
+}
