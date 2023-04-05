@@ -1,10 +1,6 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { Data, StandardResponse } from "@/util/types";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-type Data = {
-  message: string;
-};
-
-export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
+export default function handler(req: NextApiRequest, res: NextApiResponse<StandardResponse>) {
   res.status(200).json({ message: "API is active." });
 }

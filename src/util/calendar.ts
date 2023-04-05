@@ -13,7 +13,7 @@ async function initializeCalendar(): Promise<calendar_v3.Calendar> {
   return calendar;
 }
 
-export default async function createCalendarEvent(
+export async function createCalendarEvent(
   title: string,
   startTime: string,
   endTime: string,

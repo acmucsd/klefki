@@ -1,4 +1,4 @@
-import discordWebhook from "./discord";
-import createCalendarEvent from "./googleCalendar";
-
-export { discordWebhook, createCalendarEvent };
+import * as discord from "./discord";
+import * as calendar from "./calendar";
+import * as notion from "./notion";
+export { discord, calendar, notion };
