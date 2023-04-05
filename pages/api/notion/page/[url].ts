@@ -1,6 +1,6 @@
 import type { ErrorResponse, EventDetails } from "@/util/types";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { notion } from "@/util";
+import { notion, validateAuthToken } from "@/util";
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,6 +8,12 @@ export default async function handler(
 ) {
   // Validate GET request type
   if (req.method !== "GET") return res.status(400).json({ error: "Invalid request method" });
+
+  const authToken = req.headers?.authorization;
+
+  if (!authToken) return res.status(400).json({ error: "Missing auth token" });
+
+  if (!validateAuthToken(authToken)) return res.status(400).json({ error: "Invalid auth token" });
 
   // Validate URL string query param is provided
   const { url } = req.query;
