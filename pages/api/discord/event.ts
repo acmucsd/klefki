@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const eventID = response.id as string;
     discord.pingDiscordWebhook(
       ":bangbang: New Discord Event Created :bangbang:",
-      `${process.env.NEXT_PUBLIC_ACM_DISCORD_INVITE_URL}?event=${eventID}`
+      `${process.env.ACM_DISCORD_INVITE_URL}?event=${eventID}`
     );
 
     return res.status(200).json({ message: "Event created successfully!" });

@@ -2,10 +2,10 @@ import { REST, WebhookClient } from "discord.js";
 
 export const pingDiscordWebhook = (message: string, url: string) => {
   const hook = new WebhookClient({
-    url: process.env.NEXT_PUBLIC_DISCORD_WEBHOOK_URL as string,
+    url: process.env.DISCORD_WEBHOOK_URL as string,
   });
   hook.send({
-    content: `Paging <@&${process.env.NEXT_PUBLIC_DISCORD_MARKETING_ROLE_ID}>!`,
+    content: `Paging <@&${process.env.DISCORD_MARKETING_ROLE_ID}>!`,
     embeds: [
       {
         title: message,
@@ -24,11 +24,11 @@ export const createDiscordEvent = async (
   image?: string
 ) => {
   const rest = new REST({ version: "10" }).setToken(
-    process.env.NEXT_PUBLIC_DISCORD_BOT_TOKEN as string
+    process.env.DISCORD_BOT_TOKEN as string
   );
 
   const response = await rest.post(
-    `/guilds/${process.env.NEXT_PUBLIC_ACM_GUILD_ID}/scheduled-events`,
+    `/guilds/${process.env.ACM_GUILD_ID}/scheduled-events`,
     {
       body: {
         name,

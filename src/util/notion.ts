@@ -35,7 +35,7 @@ export const parseEventPage = (notionPage: any): EventDetails => {
 };
 
 export const getEventPageDetails = async (uuid: string) => {
-  const notion = new Client({ auth: process.env.NEXT_PUBLIC_NOTION_INTEGRATION_TOKEN });
+  const notion = new Client({ auth: process.env.NOTION_INTEGRATION_TOKEN });
   const page = await notion.pages.retrieve({ page_id: uuid });
   const details = parseEventPage(page);
   return details;

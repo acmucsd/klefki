@@ -25,7 +25,7 @@ export async function createCalendarEvent(
   const eventDescription = `${description}\n\nLocation: ${location}\nEvent Link: ${eventLink}`;
   try {
     const response = await calendar.events.insert({
-      calendarId: process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_ID,
+      calendarId: process.env.GOOGLE_CALENDAR_ID,
       requestBody: {
         summary: title,
         description: eventDescription,
