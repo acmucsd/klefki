@@ -12,7 +12,6 @@ export default async function handler(
   const authToken = req.headers?.authorization;
 
   if (!authToken) return res.status(400).json({ error: "Missing auth token" });
-
   if (!validateAuthToken(authToken)) return res.status(400).json({ error: "Invalid auth token" });
 
   // Validate URL string query param is provided
