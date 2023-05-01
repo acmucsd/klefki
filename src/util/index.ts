@@ -3,6 +3,19 @@ import * as calendar from "./calendar";
 import * as notion from "./notion";
 
 import totp from "totp-generator";
+import { NextApiRequest } from "next";
+
+const verifyAuth = async (req: NextApiRequest) => {
+  return new Promise((resolve, reject) => {
+    const authToken = req.headers?.authorization;
+    if (!authToken) {
+      reject("Missing auth token");
+    } else if (!validateAuthToken(authToken)) {
+      reject("Invalid auth token");
+    }
+    resolve(null);
+  });
+};
 
 /**
  * Use our TOTP key to validate the rotating bearer token is valid to ensure the client has the secret key that changes every 10 seconds
@@ -24,4 +37,4 @@ const validateAuthToken = (token: string) => {
   return accessToken === totpValue;
 };
 
-export { discord, calendar, notion, validateAuthToken };
+export { discord, calendar, notion, verifyAuth };

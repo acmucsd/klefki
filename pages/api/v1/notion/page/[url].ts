@@ -1,18 +1,23 @@
 import type { ErrorResponse, EventDetails } from "@/util/types";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { notion, validateAuthToken } from "@/util";
+import { notion, verifyAuth } from "@/util";
+import NextCors from "nextjs-cors";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<EventDetails | ErrorResponse>
 ) {
-  // Validate GET request type
-  if (req.method !== "GET") return res.status(400).json({ error: "Invalid request method" });
+  await NextCors(req, res, {
+    methods: ["GET"],
+    origin: "*",
+    optionsSuccessStatus: 200,
+  });
 
-  const authToken = req.headers?.authorization;
-
-  if (!authToken) return res.status(400).json({ error: "Missing auth token" });
-  if (!validateAuthToken(authToken)) return res.status(400).json({ error: "Invalid auth token" });
+  try {
+    await verifyAuth(req);
+  } catch (err: any) {
+    res.status(400).json({ error: err });
+  }
 
   // Validate URL string query param is provided
   const { url } = req.query;
