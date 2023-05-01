@@ -16,34 +16,27 @@ export const pingDiscordWebhook = (message: string, url: string) => {
 };
 
 export const createDiscordEvent = async (
-  name: string,
+  title: string,
   start: string,
   end: string,
   location: string,
-  description: string,
-  image?: string
+  description: string
 ) => {
-  const rest = new REST({ version: "10" }).setToken(
-    process.env.DISCORD_BOT_TOKEN as string
-  );
+  const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_BOT_TOKEN as string);
 
-  const response = await rest.post(
-    `/guilds/${process.env.ACM_GUILD_ID}/scheduled-events`,
-    {
-      body: {
-        name,
-        scheduled_start_time: start,
-        scheduled_end_time: end,
-        description,
-        image,
-        entity_metadata: {
-          location,
-        },
-        entity_type: 3,
-        privacy_level: 2,
+  const response = await rest.post(`/guilds/${process.env.ACM_GUILD_ID}/scheduled-events`, {
+    body: {
+      name: title,
+      scheduled_start_time: start,
+      scheduled_end_time: end,
+      description,
+      entity_metadata: {
+        location,
       },
-    }
-  );
+      entity_type: 3,
+      privacy_level: 2,
+    },
+  });
 
   return response;
 };

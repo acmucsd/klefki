@@ -38,7 +38,6 @@ export async function createCalendarEvent(
         },
       },
     });
-    console.log(response);
   } catch (err) {
     console.error(err);
   }

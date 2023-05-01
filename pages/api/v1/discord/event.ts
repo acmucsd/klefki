@@ -1,17 +1,27 @@
-import { discord } from "@/util";
+import { discord, verifyAuth } from "@/util";
 import type { Data } from "@/util/types";
 import type { NextApiRequest, NextApiResponse } from "next";
+import NextCors from "nextjs-cors";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-  // Validate POST request type
-  if (req.method !== "POST") return res.status(400).json({ error: "Invalid request method" });
+  await NextCors(req, res, {
+    methods: ["POST"],
+    origin: "*",
+    optionsSuccessStatus: 200,
+  });
+
+  try {
+    await verifyAuth(req);
+  } catch (err: any) {
+    res.status(400).json({ error: err });
+  }
 
   // Validate body provided
   if (!req.body) return res.status(400).json({ error: "No body provided" });
-  const { name, start, end, description, location, image } = req.body;
+  const { title, start, end, description, location, image } = req.body;
 
   // Validate body values exist and are acceptable
-  if (!name) return res.status(400).json({ error: "Missing required body field: name" });
+  if (!title) return res.status(400).json({ error: "Missing required body field: title" });
   if (!start) return res.status(400).json({ error: "Missing required body field: start" });
   if (!end) return res.status(400).json({ error: "Missing required body field: end" });
   if (!description)
@@ -24,7 +34,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   // Create Discord event
   try {
-    const response: any = await discord.createDiscordEvent(name, start, end, location, description);
+    const response: any = await discord.createDiscordEvent(
+      title,
+      start,
+      end,
+      location,
+      description
+    );
     const eventID = response.id as string;
     discord.pingDiscordWebhook(
       ":bangbang: New Discord Event Created :bangbang:",
@@ -33,7 +49,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     return res.status(200).json({ message: "Event created successfully!" });
   } catch (err) {
-    console.error(err);
     return res.status(400).json({ error: JSON.stringify(err) });
   }
 }
