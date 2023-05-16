@@ -35,8 +35,7 @@ export default async function handler(
   try {
     const details = await notion.getEventPageDetails(pageUuid);
     return res.status(200).json(details);
-  } catch (err) {
-    console.log(err);
+  } catch (err: any) {
     return res.status(400).send({ error: err.message });
   }
 }
