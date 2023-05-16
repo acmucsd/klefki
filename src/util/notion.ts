@@ -1,7 +1,9 @@
 import { Client } from "@notionhq/client";
 import { EventDetails } from "./types";
+import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
 
 export const getUuid = (page: string) => {
+  // new URLSearchParams(page).
   const splitPage = page.split("-");
   return splitPage[splitPage.length - 1];
 };
@@ -39,4 +41,29 @@ export const getEventPageDetails = async (uuid: string) => {
   const page = await notion.pages.retrieve({ page_id: uuid });
   const details = parseEventPage(page);
   return details;
+};
+
+export const getUpcomingCalendarEvents = async (): Promise<QueryDatabaseResponse> => {
+  const notion = new Client({ auth: process.env.NOTION_INTEGRATION_TOKEN });
+  const calendar = await notion.databases.query({
+    database_id: process.env.NOTION_EVENT_CALENDAR_DB_ID ?? "",
+    page_size: 100,
+    filter: {
+      and: [
+        {
+          property: "Date",
+          date: {
+            after: new Date().toISOString(),
+          },
+        },
+        {
+          property: "Type",
+          select: {
+            does_not_equal: "Non-Event",
+          },
+        },
+      ],
+    },
+  });
+  return calendar;
 };
