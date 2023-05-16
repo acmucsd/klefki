@@ -36,6 +36,7 @@ export default async function handler(
     const details = await notion.getEventPageDetails(pageUuid);
     return res.status(200).json(details);
   } catch (err) {
-    return res.status(400).send({ error: "Notion page not found" });
+    console.log(err);
+    return res.status(400).send({ error: err.message });
   }
 }

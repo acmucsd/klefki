@@ -12,7 +12,7 @@ export const getUuid = (page: string) => {
  * Follow this format: https://www.notion.so/acmucsd/A-Deep-Dive-into-ChatGPT-480e5a4dac87467ba9da3fa41a2a4520
  * */
 export const isValidNotionPage = (url: string): boolean => {
-  const validate = url.match(/^https:\/\/www.notion.so\/acmucsd\/.+-[\w\d]{32}$/g);
+  const validate = url.match(/^https:\/\/www.notion.so\/.+-[\w\d]{32}$/g);
   return validate?.length === 1;
 };
 
@@ -38,8 +38,18 @@ export const parseEventPage = (notionPage: any): EventDetails => {
 
 export const getEventPageDetails = async (uuid: string) => {
   const notion = new Client({ auth: process.env.NOTION_INTEGRATION_TOKEN });
-  const page = await notion.pages.retrieve({ page_id: uuid });
-  const details = parseEventPage(page);
+  let page;
+  try {
+    page = await notion.pages.retrieve({ page_id: uuid });
+  } catch (err) {
+    throw new Error("Page Not Found");
+  }
+  let details;
+  try {
+    details = parseEventPage(page);
+  } catch (err) {
+    throw new Error("Event is missing required fields!");
+  }
   return details;
 };
 
