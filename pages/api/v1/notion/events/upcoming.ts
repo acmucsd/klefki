@@ -20,7 +20,7 @@ export default async function handler(
   }
 
   const calendar = await notion.getUpcomingCalendarEvents();
-  const futureEvents = calendar.results.map(entry => ({
+  const futureEvents = calendar.results.map((entry: any) => ({
     title: entry.properties["Name"].title[0].plain_text,
     date: entry.properties["Date"].date,
     url: entry.url,
