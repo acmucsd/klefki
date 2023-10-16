@@ -44,7 +44,7 @@ export const parseEventPage = (notionPage: any): EventDetails => {
 };
 
 const getNotionAPI = (): Client => {
-  return new Client({ auth: process.env.NEXT_PUBLIC_NOTION_INTEGRATION_TOKEN })
+  return new Client({ auth: process.env.NOTION_INTEGRATION_TOKEN })
 }
 
 export const getEventPageDetails = async (uuid: string) => {
@@ -67,7 +67,7 @@ export const getEventPageDetails = async (uuid: string) => {
 export const getUpcomingCalendarEvents = async (): Promise<QueryDatabaseResponse> => {
   const notion = getNotionAPI();
   const calendar = await notion.databases.query({
-    database_id: process.env.NEXT_PUBLIC_NOTION_EVENT_CALENDAR_DB_ID ?? "",
+    database_id: process.env.NOTION_EVENT_CALENDAR_DB_ID ?? "",
     page_size: 100,
     filter: {
       and: [
