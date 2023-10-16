@@ -16,6 +16,10 @@ interface EventDetails {
   checkin: string;
   start: string;
   end: string;
+  date: {
+    start: string;
+    end: string;
+  }
   acmurl: string;
 }
 
