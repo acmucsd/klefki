@@ -2,6 +2,7 @@ import type { ErrorResponse, EventDetails } from "@/util/types";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { notion, verifyAuth } from "@/util";
 import NextCors from "nextjs-cors";
+import { parseEventPage } from "@/util/notion";
 
 export default async function handler(
   req: NextApiRequest,
@@ -20,10 +21,13 @@ export default async function handler(
   }
 
   const calendar = await notion.getUpcomingCalendarEvents();
-  const futureEvents = calendar.results.map((entry: any) => ({
-    title: entry.properties["Name"].title[0].plain_text,
-    date: entry.properties["Date"].date,
-    url: entry.url,
-  }));
+  const futureEvents = calendar.results.map((entry: any) => {
+    const eventDetails = parseEventPage(entry)
+    return {
+      title: eventDetails.title,
+      date: eventDetails.date,
+      url: entry.url
+    }
+  });
   return res.status(200).json(futureEvents);
 }

@@ -19,25 +19,36 @@ export const isValidNotionPage = (url: string): boolean => {
 export const parseEventPage = (notionPage: any): EventDetails => {
   const props = notionPage.properties;
 
+  const getPlainTextFromProp = (prop: any[]) => {
+    if (!Array.isArray(prop)) {
+      return "";
+    }
+    return prop.length > 0 ? prop[0].plain_text : "";
+  }
+
   const eventDetails: EventDetails = {
-    title: props["Name"]?.title[0]?.plain_text ?? "",
+    title: getPlainTextFromProp(props["Name"]?.title),
     organization: props["Organizations"]?.multi_select?.map((option: any) => option.name) ?? "",
     location: props["Location"]?.select?.name ?? "",
     description:
-      props["Marketing Description"]?.rich_text[0]?.plain_text ??
-      props["Event Description"]?.rich_text[0]?.plain_text ??
-      "",
-    checkin: props["Check-in Code"]?.rich_text[0].plain_text ?? "",
+      getPlainTextFromProp(props["Marketing Description"]?.rich_text) ||
+      getPlainTextFromProp(props["Event Description"]?.rich_text),
+    checkin: getPlainTextFromProp(props["Check-in Code"]?.rich_text),
     start: props["Date"]?.date?.start ?? "",
     end: props["Date"]?.date?.end ?? "",
+    date: props["Date"]?.date,
     acmurl: props["FB ACMURL"]?.url ?? "",
   };
 
   return eventDetails;
 };
 
+const getNotionAPI = (): Client => {
+  return new Client({ auth: process.env.NEXT_PUBLIC_NOTION_INTEGRATION_TOKEN })
+}
+
 export const getEventPageDetails = async (uuid: string) => {
-  const notion = new Client({ auth: process.env.NOTION_INTEGRATION_TOKEN });
+  const notion = getNotionAPI();
   let page;
   try {
     page = await notion.pages.retrieve({ page_id: uuid });
@@ -54,9 +65,9 @@ export const getEventPageDetails = async (uuid: string) => {
 };
 
 export const getUpcomingCalendarEvents = async (): Promise<QueryDatabaseResponse> => {
-  const notion = new Client({ auth: process.env.NOTION_INTEGRATION_TOKEN });
+  const notion = getNotionAPI();
   const calendar = await notion.databases.query({
-    database_id: process.env.NOTION_EVENT_CALENDAR_DB_ID ?? "",
+    database_id: process.env.NEXT_PUBLIC_NOTION_EVENT_CALENDAR_DB_ID ?? "",
     page_size: 100,
     filter: {
       and: [
