@@ -19,16 +19,38 @@ export const isValidNotionPage = (url: string): boolean => {
 export const parseEventPage = (notionPage: any): EventDetails => {
   const props = notionPage.properties;
 
-  const getPlainTextFromProp = (prop: any[]) => {
+  const getPlainTextFromProp = (prop: any[]): string => {
     if (!Array.isArray(prop)) {
       return "";
     }
     return prop.length > 0 ? prop[0].plain_text : "";
   }
 
+  const parseCommunity = (prop: any[]): string => {
+    if (prop.length > 0) {
+      const communities = prop.map(organization => {
+        const name = organization.name.toLowerCase() as string;
+        if (name.includes('cyber')) {
+          return 'Cyber'
+        } else if (name.includes('design')) {
+            return 'Design'
+        } else if (name.includes('hack')) {
+          return 'Hack'
+        } else if (name.includes('ai')) {
+          return 'AI'
+        }
+        return null
+      }).filter(c => c !== null) as string[];
+      if (communities.length > 0) {
+        return communities[0];
+      }
+    }
+    return "General"
+  }
+
   const eventDetails: EventDetails = {
     title: getPlainTextFromProp(props["Name"]?.title),
-    organization: props["Organizations"]?.multi_select?.map((option: any) => option.name) ?? "",
+    community: parseCommunity(props["Organizations"]?.multi_select),
     location: props["Location"]?.select?.name ?? "",
     description:
       getPlainTextFromProp(props["Marketing Description"]?.rich_text) ||

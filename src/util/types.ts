@@ -10,7 +10,7 @@ type Data = StandardResponse | ErrorResponse;
 
 interface EventDetails {
   title: string;
-  organization: string[];
+  community: string;
   location: string;
   description: string;
   checkin: string;

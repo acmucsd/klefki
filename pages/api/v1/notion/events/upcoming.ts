@@ -26,6 +26,7 @@ export default async function handler(
     return {
       title: eventDetails.title,
       date: eventDetails.date,
+      community: eventDetails.community,
       url: entry.url
     }
   });
