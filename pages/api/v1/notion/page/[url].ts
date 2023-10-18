@@ -16,7 +16,7 @@ export default async function handler(
   try {
     await verifyAuth(req);
   } catch (err: any) {
-    res.status(400).json({ error: err });
+    return res.status(400).json({ error: err });
   }
 
   // Validate URL string query param is provided
