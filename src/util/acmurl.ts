@@ -1,4 +1,4 @@
-import got, {GotOptions} from "got";
+import got, { GotOptions } from "got";
 
 const acmurlUsername = process.env.ACMURL_USERNAME as string
 const acmurlPassword = process.env.ACMURL_PASSWORD as string;
