@@ -9,7 +9,6 @@ const acmurlPassword = process.env.ACMURL_PASSWORD as string;
  * @param shortlink The short link to make an ACMURL for.
  * @param longlink The link to point it to.
  * @param title Title of ACMURL in YOURLS interface.
- * @private
  * @returns The new shortened ACMURL.
  */
 export async function addACMURL(shortlink: string, longlink: string, title: string): Promise<string> {
@@ -37,7 +36,6 @@ export async function addACMURL(shortlink: string, longlink: string, title: stri
  * @param shortlink The short link to make an ACMURL for.
  * @param longlink The link to point it to.
  * @param title Title of ACMURL in YOURLS interface.
- * @private
  * @returns Tuple of old URL on YOURLS and new ACMURL.
  */
 export async function handleExistingACMURL(shortlink: string, longlink: string, title: string): Promise<[string, string]> {
@@ -51,7 +49,6 @@ export async function handleExistingACMURL(shortlink: string, longlink: string, 
 /**
  * Get the link that is redirected from a given ACMURL. Makes one HTTP call to YOURLS' API.
  * @param shortlink The short link to check the ACMURL for.
- * @private
  * @returns the link that `acmurl.com/shortlink` points to.
  */
 async function expandACMURL(shortlink: string): Promise<string> {
@@ -74,7 +71,6 @@ async function expandACMURL(shortlink: string): Promise<string> {
  * @param shortlink The short link to make an ACMURL for.
  * @param longlink The link to point it to.
  * @param title Title of ACMURL in YOURLS interface.
- * @private
  */
 async function updateACMURL(shortlink: string, longlink: string, title: string): Promise<void> {
   await got.post('https://acmurl.com/yourls-api.php', {
@@ -88,4 +84,28 @@ async function updateACMURL(shortlink: string, longlink: string, title: string):
       title,
     },
   } as GotOptions<any>);
+}
+
+/**
+ * Get all ACMURLs. Makes one HTTP call to YOURLS' API.
+ * @returns All ACMURLs.
+ */
+export async function getAllACMURL() {
+  // await got.post(`https://acmurl.com/yourls-api.php?username=${acmurlUsername}&password=${acmurlPassword}&action=list&format=json`);
+
+  const acmurls = await got.post('https://acmurl.com/yourls-api.php', {
+    form: {
+      username: acmurlUsername,
+      password: acmurlPassword,
+      action: 'list',
+      format: 'json',
+    },
+  } as GotOptions<any>);
+  const data = JSON.parse(acmurls.body);
+
+  if (data.statusCode !== 200) {
+    throw new Error(data.message);
+  }
+
+  return data.result;
 }
