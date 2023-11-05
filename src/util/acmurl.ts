@@ -87,12 +87,10 @@ async function updateACMURL(shortlink: string, longlink: string, title: string):
 }
 
 /**
- * Get all ACMURLs. Makes one HTTP call to YOURLS' API.
- * @returns All ACMURLs.
+ * Get all ACMURLs. Makes one HTTP call to YOURLS' API. 
+ * @returns List of all ACMURL keywords.
  */
 export async function getAllACMURL() {
-  // await got.post(`https://acmurl.com/yourls-api.php?username=${acmurlUsername}&password=${acmurlPassword}&action=list&format=json`);
-
   const acmurls = await got.post('https://acmurl.com/yourls-api.php', {
     form: {
       username: acmurlUsername,
