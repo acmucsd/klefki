@@ -34,8 +34,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   // Discord only accepts gif/jpeg/png for cover images on scheduled events
   const discordImageTypes = ['gif', 'jpeg', 'jpg', 'png'];
-  const ext = image.toString().split('.').pop();
-  if (!discordImageTypes.includes(ext))
+  const extRe = new RegExp("\.([0-9a-z]+)(?:[\?#]|$)", "i");
+  const ext = extRe.exec(image);
+  if (ext == null || !discordImageTypes.includes(ext[1]))
     return res.status(400).json({ error: "Cover image must be a gif, jpeg, or png"});
 
   // Create Discord event
