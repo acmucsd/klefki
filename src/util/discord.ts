@@ -50,7 +50,7 @@ export const addCoverEvent = async (
     const data = await fetch(url);
     const blob = await data.arrayBuffer()
     const extRe = new RegExp("\.([0-9a-z]+)(?:[\?#]|$)", "i");
-    const ext = extRe.exec(image);
+    const ext = extRe.exec(image).toString().toLowerCase()[1];
 
     return `data:image/${ext};base64,${Buffer.from(blob).toString('base64')}`
   };

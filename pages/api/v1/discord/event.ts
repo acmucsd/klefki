@@ -32,12 +32,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   if (new Date(end) < new Date())
     return res.status(400).json({ error: "End date cannot be in the past" });
 
+  if(image){
   // Discord only accepts gif/jpeg/png for cover images on scheduled events
-  const discordImageTypes = ['gif', 'jpeg', 'jpg', 'png'];
-  const extRe = new RegExp("\.([0-9a-z]+)(?:[\?#]|$)", "i");
-  const ext = extRe.exec(image);
-  if (ext == null || !discordImageTypes.includes(ext[1]))
-    return res.status(400).json({ error: "Cover image must be a gif, jpeg, or png"});
+    const discordImageTypes = ['gif', 'jpeg', 'jpg', 'png'];
+    const extRe = new RegExp("\.([0-9a-z]+)(?:[\?#]|$)", "i");
+    const ext = extRe.exec(image);
+    if (ext == null || !discordImageTypes.includes(ext[1].toString().toLowerCase()))
+      return res.status(400).json({ error: "Cover image must be a gif, jpeg, or png"});
+  }
 
   // Create Discord event
   try {
