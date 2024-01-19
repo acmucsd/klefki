@@ -32,6 +32,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   if (new Date(end) < new Date())
     return res.status(400).json({ error: "End date cannot be in the past" });
 
+  // Discord only accepts gif/jpeg/png for cover images on scheduled events
+  const discordImageTypes = ['gif', 'jpeg', 'jpg', 'png'];
+  const ext = image.toString().split('.').pop();
+  if (!discordImageTypes.includes(ext))
+    return res.status(400).json({ error: "Cover image must be a gif, jpeg, or png"});
+
   // Create Discord event
   try {
     const response: any = await discord.createDiscordEvent(
@@ -46,8 +52,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       ":bangbang: New Discord Event Created :bangbang:",
       `${process.env.ACM_DISCORD_INVITE_URL}?event=${eventID}`
     );
+    
+    // Add cover image, if included
+    var cover = ""
+    if(image){
+      await discord.addCoverEvent(
+        eventID,
+        image,
+      );
+    }
+    else cover = ", without a cover image";
 
-    return res.status(200).json({ message: "Event created successfully!" });
+    return res.status(200).json({ message: `Event created successfully${cover}!` });
   } catch (err) {
     return res.status(400).json({ error: JSON.stringify(err) });
   }

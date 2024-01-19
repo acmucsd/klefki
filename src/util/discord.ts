@@ -40,3 +40,27 @@ export const createDiscordEvent = async (
 
   return response;
 };
+
+export const addCoverEvent = async (
+  eventID: string,
+  image: any,
+) => {
+  // Discord takes image in format: data:image/<extension>;base64,BASE64_ENCODED_IMAGE_DATA
+  const imageUrlToBase64 = async (url: string) => {
+    const data = await fetch(url);
+    const blob = await data.arrayBuffer()
+    const ext = url.toString().split('.').pop()
+
+    return `data:image/${ext};base64,${Buffer.from(blob).toString('base64')}`
+  };
+
+  var imageURI = (await imageUrlToBase64(image)).toString();
+
+  const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_BOT_TOKEN as string);
+  const response = await rest.patch(`/guilds/${process.env.ACM_GUILD_ID}/scheduled-events/${eventID}`, {
+      body: { image: imageURI, },
+    }
+  );
+
+  return response;
+}
