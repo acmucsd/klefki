@@ -9,7 +9,7 @@ export const pingDiscordWebhook = (message: string, url: string, title: string, 
     embeds: [
       {
         title: message,
-        description: `*Event title*: ${title}\n*Location*: ${location}\n*Link*: ${url}`,
+        description: `**Event title**: ${title}\n**Location**: ${location}\n**Link**: ${url}`,
       },
     ],
   });
