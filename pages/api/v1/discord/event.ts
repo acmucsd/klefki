@@ -1,4 +1,5 @@
 import { discord, verifyAuth } from "@/util";
+import { getImageExtension, imageUrlToBase64 } from "@/util/discord";
 import type { Data } from "@/util/types";
 import type { NextApiRequest, NextApiResponse } from "next";
 import NextCors from "nextjs-cors";
@@ -32,6 +33,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   if (new Date(end) < new Date())
     return res.status(400).json({ error: "End date cannot be in the past" });
 
+  let imageUpload = undefined;
+  if (image) {
+    // Discord only accepts gif/jpeg/png for cover images on scheduled events
+    const discordImageTypes = ['gif', 'jpeg', 'jpg', 'png'];
+    const extension = getImageExtension(image)
+    if (!discordImageTypes.includes(extension)) {
+      return res.status(400).json({ error: "Cover image must be a gif, jpeg, or png" });
+    } else {
+      imageUpload = await imageUrlToBase64(image);
+    } 
+  }
+
   // Create Discord event
   try {
     const response: any = await discord.createDiscordEvent(
@@ -39,7 +52,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       start,
       end,
       location,
-      description
+      description,
+      imageUpload
     );
     const eventID = response.id as string;
     discord.pingDiscordWebhook(
