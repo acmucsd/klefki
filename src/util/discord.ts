@@ -1,6 +1,6 @@
 import { REST, WebhookClient } from "discord.js";
 
-export const pingDiscordWebhook = (message: string, url: string) => {
+export const pingDiscordWebhook = (message: string, url: string, title: string, location: string) => {
   const hook = new WebhookClient({
     url: process.env.DISCORD_WEBHOOK_URL as string,
   });
@@ -9,7 +9,7 @@ export const pingDiscordWebhook = (message: string, url: string) => {
     embeds: [
       {
         title: message,
-        description: `Please verify all details are correct: ${url}`,
+        description: `*Event title*: ${title}\n*Location*: ${location}\n*Link*: ${url}`,
       },
     ],
   });
