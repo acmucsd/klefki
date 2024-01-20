@@ -60,19 +60,3 @@ export const createDiscordEvent = async (
 
   return response;
 };
-
-export const addCoverEvent = async (
-  eventID: string,
-  image: any,
-) => {
-
-  var imageURI = (await imageUrlToBase64(image)).toString();
-
-  const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_BOT_TOKEN as string);
-  const response = await rest.patch(`/guilds/${process.env.ACM_GUILD_ID}/scheduled-events/${eventID}`, {
-      body: { image: imageURI, },
-    }
-  );
-
-  return response;
-}

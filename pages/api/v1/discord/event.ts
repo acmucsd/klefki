@@ -34,8 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return res.status(400).json({ error: "End date cannot be in the past" });
 
   let imageUpload = undefined;
-
-  if(image){
+  if (image) {
     // Discord only accepts gif/jpeg/png for cover images on scheduled events
     const discordImageTypes = ['gif', 'jpeg', 'jpg', 'png'];
     const extension = getImageExtension(image)
@@ -63,7 +62,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       title, location
     );
 
-    return res.status(200).json({ message: `Event created successfully!` });
+    return res.status(200).json({ message: "Event created successfully!" });
   } catch (err) {
     return res.status(400).json({ error: JSON.stringify(err) });
   }
