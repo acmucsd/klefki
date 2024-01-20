@@ -1,4 +1,5 @@
 import { discord, verifyAuth } from "@/util";
+import { getImageExtension, imageUrlToBase64 } from "@/util/discord";
 import type { Data } from "@/util/types";
 import type { NextApiRequest, NextApiResponse } from "next";
 import NextCors from "nextjs-cors";
@@ -32,13 +33,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   if (new Date(end) < new Date())
     return res.status(400).json({ error: "End date cannot be in the past" });
 
+  let imageUpload = undefined;
+
   if(image){
-  // Discord only accepts gif/jpeg/png for cover images on scheduled events
+    // Discord only accepts gif/jpeg/png for cover images on scheduled events
     const discordImageTypes = ['gif', 'jpeg', 'jpg', 'png'];
-    const extRe = new RegExp("\.([0-9a-z]+)(?:[\?#]|$)", "i");
-    const ext = extRe.exec(image);
-    if (ext == null || !discordImageTypes.includes(ext[1].toString().toLowerCase()))
-      return res.status(400).json({ error: "Cover image must be a gif, jpeg, or png"});
+    const extension = getImageExtension(image)
+    if (!discordImageTypes.includes(extension)) {
+      return res.status(400).json({ error: "Cover image must be a gif, jpeg, or png" });
+    } else {
+      imageUpload = await imageUrlToBase64(image);
+    } 
   }
 
   // Create Discord event
@@ -48,7 +53,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       start,
       end,
       location,
-      description
+      description,
+      imageUpload
     );
     const eventID = response.id as string;
     discord.pingDiscordWebhook(
@@ -56,18 +62,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       `${process.env.ACM_DISCORD_INVITE_URL}?event=${eventID}`,
       title, location
     );
-    
-    // Add cover image, if included
-    var cover = ""
-    if(image){
-      await discord.addCoverEvent(
-        eventID,
-        image,
-      );
-    }
-    else cover = ", without a cover image";
 
-    return res.status(200).json({ message: `Event created successfully${cover}!` });
+    return res.status(200).json({ message: `Event created successfully!` });
   } catch (err) {
     return res.status(400).json({ error: JSON.stringify(err) });
   }
