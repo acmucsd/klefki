@@ -59,7 +59,7 @@ export const parseEventPage = (notionPage: any): EventDetails => {
     start: props["Date"]?.date?.start ?? "",
     end: props["Date"]?.date?.end ?? "",
     date: props["Date"]?.date,
-    acmurl: props["FB ACMURL"]?.url ?? "",
+    acmurl: props["Marketing ACMURL"]?.url ?? "",
   };
 
   return eventDetails;
