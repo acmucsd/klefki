@@ -38,3 +38,5 @@ yarn-error.log*
 next-env.d.ts
 
 gapi-service-account-creds.json
+
+.vscode
