@@ -1,27 +1,25 @@
 const aws = require('aws-sdk');
 const path = require('path');
-const config = require('./config');
-
-type File = Express.Multer.File;
-type FileOptions = multer.Options;
 
 const s3 = new aws.S3({
     apiVersion: '2006-03-01',
-    region: config.S3_REGION,
+    region: process.env.S3_REGION,
     credentials: {
-        accessKeyId: config.S3_ACCESS_KEY_ID,
-        secretAccessKey: config.S3_SECRET_ACCESS_KEY
+        accessKeyId: process.env.S3_ACCESS_KEY_ID,
+        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
     },
   });
 
 export async function upload(file: File, fileName: string) {
   const params = {
     ACL: 'public-read',
-    Body: file.buffer,
-    Bucket: config.S3_BUCKET,
-    Key: `uploads/${fileName}${path.extname(file.originalname)}`,
+    Body: file.type,
+    Bucket: process.env.S3_BUCKET,
+    Key: `uploads/${fileName}${path.extname(file.name)}`,
   }
-  return s3.upload(params).promise().then((data) => data.Location);
+  console.log("uploading...") 
+  const data = await s3.upload(params).promise();
+  console.log(data);
+  console.log(data.Location);
+  return data.Location;
 }
-
-module.exports = {upload};

@@ -9,11 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.588.0",
     "@notionhq/client": "^2.2.3",
     "@types/node": "18.15.1",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
-    "aws-sdk": "^2.1618.0",
+    "aws-sdk": "^2.1633.0",
     "discord.js": "^14.8.0",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
