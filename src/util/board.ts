@@ -1,25 +1,32 @@
-const aws = require('aws-sdk');
+import { S3Client } from "@aws-sdk/client-s3";
 const path = require('path');
+const { Upload } = require("@aws-sdk/lib-storage");
 
-const s3 = new aws.S3({
-    apiVersion: '2006-03-01',
-    region: process.env.S3_REGION,
-    credentials: {
-        accessKeyId: process.env.S3_ACCESS_KEY_ID,
-        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
-    },
-  });
+const client = new S3Client({
+  apiVersion: '2006-03-01',
+  region: process.env.S3_REGION,
+  credentials: {
+      accessKeyId: process.env.S3_ACCESS_KEY_ID,
+      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
+  },
+});
 
-export async function upload(file: File, fileName: string) {
+export async function upload(file: File) {
+  const buffer = Buffer.from(await file.arrayBuffer())
   const params = {
     ACL: 'public-read',
-    Body: file.type,
+    Body: buffer,
     Bucket: process.env.S3_BUCKET,
-    Key: `uploads/${fileName}${path.extname(file.name)}`,
+    Key: `uploads/${file.name}${path.extname(file.name)}`,
   }
   console.log("uploading...") 
-  const data = await s3.upload(params).promise();
-  console.log(data);
-  console.log(data.Location);
-  return data.Location;
+  // const response = await client.send(new PutObjectCommand(params));
+  const response = await new Upload({
+    client,
+    params,
+  }).done();
+
+  // console.log(response);
+  // console.log(response.Location); 
+  return response.Location;
 }
