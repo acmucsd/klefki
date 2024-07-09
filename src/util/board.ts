@@ -19,14 +19,9 @@ export async function upload(file: File) {
     Bucket: process.env.S3_BUCKET,
     Key: `uploads/${file.name}${path.extname(file.name)}`,
   }
-  console.log("uploading...") 
-  // const response = await client.send(new PutObjectCommand(params));
   const response = await new Upload({
     client,
     params,
   }).done();
-
-  // console.log(response);
-  // console.log(response.Location); 
   return response.Location;
 }

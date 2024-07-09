@@ -4,11 +4,25 @@ import * as notion from "./notion";
 
 import totp from "totp-generator";
 import { NextApiRequest } from "next";
+import { headers } from "next/headers";
 
 const verifyAuth = async (req: NextApiRequest): Promise<void> => {
   return new Promise((resolve, reject) => {
     if (process.env.NODE_ENV !== "production") resolve();
     const authToken = req.headers?.authorization;
+    if (!authToken) {
+      reject("Missing auth token");
+    } else if (!validateAuthToken(authToken)) {
+      reject("Invalid auth token");
+    }
+    resolve();
+  });
+};
+
+const verifyAuthApp = async (headerList: Headers): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    if (process.env.NODE_ENV !== "production") resolve();
+    const authToken = headerList.get("authorization");
     if (!authToken) {
       reject("Missing auth token");
     } else if (!validateAuthToken(authToken)) {
@@ -38,4 +52,4 @@ const validateAuthToken = (token: string) => {
   return accessToken === totpValue;
 };
 
-export { discord, calendar, notion, verifyAuth };
+export { discord, calendar, notion, verifyAuth, verifyAuthApp };
