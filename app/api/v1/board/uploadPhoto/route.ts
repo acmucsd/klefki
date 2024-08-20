@@ -13,16 +13,16 @@ export const config = {
  * 
  */
 export async function POST(req: NextRequest) {
+    try {
+      await verifyAuthApp(headers());
+    } catch (err: any) {
+      return NextResponse.json({ error: err }, {status: 400});
+    }
+
   const form = await req.formData();
   const file = form.get('file') as File;
   console.log(file);
   const url = await upload(file);
-
-  try {
-    await verifyAuthApp(headers());
-  } catch (err: any) {
-    return NextResponse.json({ error: err }, {status: 400});
-  }
 
   return NextResponse.json({ url: url }, {
     status: 200,
