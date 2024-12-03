@@ -2,13 +2,12 @@ import { S3Client } from "@aws-sdk/client-s3";
 const path = require('path');
 const { Upload } = require("@aws-sdk/lib-storage");
 
-//@ts-ignore
 const client = new S3Client({
   apiVersion: '2006-03-01',
-  region: process.env.S3_REGION,
+  region: process.env.S3_REGION!,
   credentials: {
-      accessKeyId: process.env.S3_ACCESS_KEY_ID,
-      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
+      accessKeyId: process.env.S3_ACCESS_KEY_ID!,
+      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!
   },
 });
 
