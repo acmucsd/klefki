@@ -31,12 +31,13 @@
     "sass": "^1.59.2",
     "totp-generator": "^0.0.14",
     "typescript": "4.9.5",
-    "utf-8-validate": "^6.0.5",
-    "zlib-sync": "^0.1.9"
+    "utf-8-validate": "^6.0.5"
   },
   "devDependencies": {
     "@types/got": "^9.6.12",
     "@types/totp-generator": "^0.0.5",
-    "@types/uuid": "^9.0.1"
+    "@types/uuid": "^9.0.1",
+    "node-loader": "^2.1.0",
+    "zlib-sync": "^0.1.9"
   }
 }
