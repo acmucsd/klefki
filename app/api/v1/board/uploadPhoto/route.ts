@@ -10,7 +10,7 @@ export const config = {
 };
 
 /**
- * 
+ * POST request to upload a board photo to the S3 bucket
  */
 export async function POST(req: NextRequest) {
     try {
@@ -21,7 +21,6 @@ export async function POST(req: NextRequest) {
 
   const form = await req.formData();
   const file = form.get('file') as File;
-  console.log(file);
   const url = await upload(file);
 
   return NextResponse.json({ url: url }, {

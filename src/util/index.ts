@@ -21,7 +21,6 @@ const verifyAuth = async (req: NextApiRequest): Promise<void> => {
 
 const verifyAuthApp = async (headerList: Headers): Promise<void> => {
   return new Promise((resolve, reject) => {
-    // console.log(headerList.get("Authorization"));
     if (process.env.NODE_ENV !== "production") resolve();
     const authToken = headerList.get("Authorization");
     if (!authToken) {
