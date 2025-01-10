@@ -9,11 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.588.0",
+    "@aws-sdk/lib-storage": "^3.609.0",
     "@notionhq/client": "^2.2.3",
     "@types/node": "18.15.1",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "aws-sdk": "^2.1633.0",
+    "bufferutil": "^4.0.8",
     "discord.js": "^14.8.0",
+    "encoding": "^0.1.13",
+    "erlpack": "^0.1.4",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
     "googleapis": "^112.0.0",
@@ -24,11 +30,14 @@
     "react-dom": "18.2.0",
     "sass": "^1.59.2",
     "totp-generator": "^0.0.14",
-    "typescript": "4.9.5"
+    "typescript": "4.9.5",
+    "utf-8-validate": "^6.0.5"
   },
   "devDependencies": {
     "@types/got": "^9.6.12",
     "@types/totp-generator": "^0.0.5",
-    "@types/uuid": "^9.0.1"
+    "@types/uuid": "^9.0.1",
+    "node-loader": "^2.1.0",
+    "zlib-sync": "^0.1.9"
   }
 }

@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     origin: "*",
     optionsSuccessStatus: 200,
   });
-
+  
   try {
     await verifyAuth(req);
   } catch (err: any) {
