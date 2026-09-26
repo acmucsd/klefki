@@ -12,8 +12,10 @@ export const getUuid = (page: string) => {
  * Follow this format: https://www.notion.so/acmucsd/A-Deep-Dive-into-ChatGPT-480e5a4dac87467ba9da3fa41a2a4520
  * */
 export const isValidNotionPage = (url: string): boolean => {
-  const validate = url.match(/^https:\/\/www.notion.so\/.+-[\w\d]{32}\?*[\w\d\=]*$/g);
-  return validate?.length === 1;
+  const legacyRegex = /^https:\/\/www\.notion\.so\/.+-[\w\d]{32}\?*[\w\d=]*$/;
+  const appRegex = /^https:\/\/app\.notion\.com\/p\/.+-[\w\d]{32}$/;
+
+  return legacyRegex.test(url) || appRegex.test(url);
 };
 
 export const parseEventPage = (notionPage: any): EventDetails => {
